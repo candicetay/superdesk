@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.24.0 (4a2a0458)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: superdesk-client
+  name: superdesk-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: superdesk-client
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.24.0 (4a2a0458)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/superdesk: "true"
+        io.kompose.service: superdesk-client
+    spec:
+      containers:
+        - env:
+            - name: SUPERDESK_URL
+              value: http://localhost:8080/api
+            - name: SUPERDESK_WS_URL
+              value: ws://localhost:8080/ws
+          image: sourcefabricoss/superdesk-client:latest
+          name: superdesk-client
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
